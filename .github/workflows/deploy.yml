@@ -11,15 +11,15 @@ jobs:
     steps:
     - name: executing remote ssh commands using password
       uses: appleboy/ssh-action@master
-      env: 
-        CLONE_DIR: /home/john/grp6/
+      # env: 
+      #   CLONE_DIR: /home/john/grp6/
       with:
         host: ${{ secrets.SSH_HOST }}
         username: ${{ secrets.SSH_USERNAME }}
         # password: ${{ secrets.SSH_PASSWORD }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: ${{ secrets.SSH_PORT }}
-        envs: CLONE_DIR
+        # envs: CLONE_DIR
         script: |
           echo 'Coucou La team Simplon Prod :D'
           mkdir -p /home/john/grp6/
