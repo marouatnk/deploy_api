@@ -23,6 +23,8 @@ jobs:
         script: |
           echo 'Coucou La team Simplon Prod :D'
           mkdir -p /home/john/grp6/
-          git clone -b develop git@github.com:maxime556/group6_API.git /home/john/grp6/
+          rm -rf /home/john/grp6/*
+          git clone -b develop git@github.com:maroautnk/deploy_api.git /home/john/grp6/
           cd /home/john/grp6/
-          ls -la
+          npm install
+          npm run build
