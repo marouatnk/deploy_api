@@ -35,5 +35,12 @@ jobs:
           cp -r /home/john/node-grp6-temp/dist /home/john/node-grp6/dist
           rm -rf /home/john/node-grp6-temp
           cd /home/john/node-grp6/dist
+
+          sed -i 's/xenv/prod/g' .env
+          sed -i 's/xdbhost/${{ secrets.PROD_DB_HOST }}/g' .env
+          sed -i 's/xdbuser/${{ secrets.PROD_DB_USER }}/g' .env
+          sed -i 's/xdbpwd/${{ secrets.PROD_DB_PWD }}/g' .env
+          sed -i 's/xdbname/${{ secrets.PROD_DB_DATABASE }}/g' .env
+
           pm2 stop app-grp6 > /dev/null 2>&1
           pm2 start index.js --name "app-grp6"
