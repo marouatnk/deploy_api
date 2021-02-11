@@ -12,7 +12,7 @@ jobs:
     - name: executing remote ssh commands using password
       uses: appleboy/ssh-action@master
       env: 
-        CLONE_DIR: /home/john/grp6/
+        CLONE_DIR: /home/john/node-grp6/
       with:
         host: ${{ secrets.SSH_HOST }}
         username: ${{ secrets.SSH_USERNAME }}
@@ -22,11 +22,14 @@ jobs:
         envs: CLONE_DIR
         script: |
           echo 'Coucou La team Simplon Prod :D'
-          mkdir -p /home/john/grp6/
-          rm -rf /home/john/grp6/*
-          git clone -b develop git@github.com:marouatnk/deploy_api.git /home/john/grp6/
-          cd /home/john/grp6/
+          mkdir -p /home/john/node-grp6/
+          rm -rf /home/john/node-grp6/*
+          git clone -b develop git@github.com:marouatnk/deploy_api.git /home/john/node-grp6/
+          cd /home/john/node-grp6/
           npm install
           npm run build
+          cp .env.beta ./dist/.env
+          cd dist
+          sed -i 's/xport/${{ secrets.EXPRESS_PORT }}/g' .env
           
 
