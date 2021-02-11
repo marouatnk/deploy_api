@@ -7,7 +7,7 @@ import { TrackRepository } from "./repository/track.repository"
 const app = express()
 
 app.get('/', (req: any, res: any) => {
-    res.send({ message: "Ok" })
+    res.send({ message: "Ok group6" })
 })
 
 app.get('/tracks', (req: any, res: any) => {
