@@ -27,16 +27,16 @@ jobs:
           cd /home/john/node-grp6-temp/
           npm install
           npm run build
-          cp .env.beta ./dist/.env
+          cp .env.dist ./dist/.env
           cd dist
           npm install --production
-          sed -i 's/xport/${{ secrets.EXPRESS_PORT }}/g' .env
           rm -rf /home/john/node-grp6/*
           cp -r /home/john/node-grp6-temp/dist /home/john/node-grp6/dist
           rm -rf /home/john/node-grp6-temp
           cd /home/john/node-grp6/dist
 
           sed -i 's/xenv/prod/g' .env
+          sed -i 's/xport/${{ secrets.EXPRESS_PORT }}/g' .env
           sed -i 's/xdbhost/${{ secrets.PROD_DB_HOST }}/g' .env
           sed -i 's/xdbuser/${{ secrets.PROD_DB_USER }}/g' .env
           sed -i 's/xdbpwd/${{ secrets.PROD_DB_PWD }}/g' .env

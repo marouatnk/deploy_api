@@ -8,12 +8,9 @@ CREATE TABLE `track` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-LOCK TABLES `track` WRITE;
 
 INSERT INTO `track` (`id`, `title`, `album`, `band`)
 VALUES
 	(1,'Odd eye', 'Road To Utopia', 'Dreamcatcher'),
 	(2,'Scream', 'tree of language', 'Dreamcatcher'),
 	(3,'Boca', 'Love myself', 'Dreamcatcher');
-
-UNLOCK TABLES;
