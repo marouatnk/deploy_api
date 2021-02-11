@@ -30,6 +30,7 @@ jobs:
           npm run build
           cp .env.beta ./dist/.env
           cd dist
+          npm install --production
           sed -i 's/xport/${{ secrets.EXPRESS_PORT }}/g' .env
           rm -rf /home/john/node-grp6/*
           cp -r /home/john/node-grp6-temp/dist /home/john/node-grp6/dist
