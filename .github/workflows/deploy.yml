@@ -31,5 +31,6 @@ jobs:
           cp .env.beta ./dist/.env
           cd dist
           sed -i 's/xport/${{ secrets.EXPRESS_PORT }}/g' .env
+          rm -rf -v !(dist)
           
 
