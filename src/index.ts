@@ -5,6 +5,9 @@ import { Config, DB } from "./service/index.service"
 import { TrackRepository } from "./repository/track.repository"
 
 const app = express()
+var cors = require('cors');
+
+app.use(cors())
 
 app.get('/', (req: any, res: any) => {
     res.send({ message: "Ok group6" })
