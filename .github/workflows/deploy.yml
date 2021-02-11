@@ -26,12 +26,13 @@ jobs:
           mkdir -p /home/john/node-grp6-temp/
           git clone -b develop git@github.com:marouatnk/deploy_api.git /home/john/node-grp6-temp/
           cd /home/john/node-grp6-temp/
+          npm install
           npm run build
           cp .env.beta ./dist/.env
           cd dist
           sed -i 's/xport/${{ secrets.EXPRESS_PORT }}/g' .env
           rm -rf /home/john/node-grp6/*
-          cp /home/john/node-grp6-temp/dist /home/john/node-grp6/dist
+          cp -r /home/john/node-grp6-temp/dist /home/john/node-grp6/dist
           rm -rf /home/john/node-grp6-temp
           
 
