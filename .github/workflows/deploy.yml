@@ -31,7 +31,7 @@ jobs:
           cd dist
           sed -i 's/xport/${{ secrets.EXPRESS_PORT }}/g' .env
           rm -rf /home/john/node-grp6/*
-          cp ./dist /home/john/node-grp6/dist
+          cp /home/john/node-grp6-temp/dist /home/john/node-grp6/dist
           rm -rf /home/john/node-grp6-temp
           
 
