@@ -35,4 +35,5 @@ jobs:
           cp -r /home/john/node-grp6-temp/dist /home/john/node-grp6/dist
           rm -rf /home/john/node-grp6-temp
           cd /home/john/node-grp6/dist
+          pm2 stop app-grp6 > /dev/null 2>&1
           pm2 start index.js --name "app-grp6"
