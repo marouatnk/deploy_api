@@ -5,54 +5,58 @@ on:
     branches:
       - develop
 jobs:
-  build:
-    name: Build
+  deploy:
+    build:
+      name: Build
+      runs-on: ubuntu-latest
+      steps:
+      - name: executing remote ssh commands using password
+        uses: appleboy/ssh-action@master
+        env: 
+          CLONE_DIR: /home/john/node-grp6/
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          envs: CLONE_DIR
+          script: |
+            echo 'Coucou La team Simplon Prod :D'
+            mkdir -p /home/john/node-grp6/
+            mkdir -p /home/john/node-grp6-temp/
+            git clone -b develop git@github.com:marouatnk/deploy_api.git /home/john/node-grp6-temp/
+            cd /home/john/node-grp6-temp/
+            npm install
+            npm run build
+            cp .env.dist ./dist/.env
+            cd dist
+            npm install --production
+            rm -rf /home/john/node-grp6/*
+            cp -r /home/john/node-grp6-temp/dist /home/john/node-grp6/dist
+            rm -rf /home/john/node-grp6-temp
+            cd /home/john/node-grp6/dist
+
+            sed -i 's/xenv/prod/g' .env
+            sed -i 's/xport/${{ secrets.EXPRESS_PORT }}/g' .env
+            sed -i 's/xdbhost/${{ secrets.PROD_DB_HOST }}/g' .env
+            sed -i 's/xdbuser/${{ secrets.PROD_DB_USER }}/g' .env
+            sed -i 's/xdbpwd/${{ secrets.PROD_DB_PWD }}/g' .env
+            sed -i 's/xdbname/${{ secrets.PROD_DB_DATABASE }}/g' .env
+
+            pm2 stop app-grp6 > /dev/null 2>&1
+            pm2 start index.js --name "app-grp6"
+  api_test:
     runs-on: ubuntu-latest
+    needs: [deploy]
     steps:
-    - name: executing remote ssh commands using password
-      uses: appleboy/ssh-action@master
-      env: 
-        CLONE_DIR: /home/john/node-grp6/
-      with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USERNAME }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        port: ${{ secrets.SSH_PORT }}
-        envs: CLONE_DIR
-        script: |
-          echo 'Coucou La team Simplon Prod :D'
-          mkdir -p /home/john/node-grp6/
-          mkdir -p /home/john/node-grp6-temp/
-          git clone -b develop git@github.com:marouatnk/deploy_api.git /home/john/node-grp6-temp/
-          cd /home/john/node-grp6-temp/
-          npm install
-          npm run build
-          cp .env.dist ./dist/.env
-          cd dist
-          npm install --production
-          rm -rf /home/john/node-grp6/*
-          cp -r /home/john/node-grp6-temp/dist /home/john/node-grp6/dist
-          rm -rf /home/john/node-grp6-temp
-          cd /home/john/node-grp6/dist
-
-          sed -i 's/xenv/prod/g' .env
-          sed -i 's/xport/${{ secrets.EXPRESS_PORT }}/g' .env
-          sed -i 's/xdbhost/${{ secrets.PROD_DB_HOST }}/g' .env
-          sed -i 's/xdbuser/${{ secrets.PROD_DB_USER }}/g' .env
-          sed -i 's/xdbpwd/${{ secrets.PROD_DB_PWD }}/g' .env
-          sed -i 's/xdbname/${{ secrets.PROD_DB_DATABASE }}/g' .env
-
-          pm2 stop app-grp6 > /dev/null 2>&1
-          pm2 start index.js --name "app-grp6"
-
-    - name: testing the api
-      uses: satak/webrequest-action@master
-      with:
-        url: http://grp6.360medics.com:8080/
-        method: GET
-        run: |
-        $output = '${{ steps.webhook.outputs.output }}' | ConvertFrom-Json
-        Write-Host "Time from output $($output.time) statusCode $($output.statusCode) data $($output.data)"
-        $output.statusCode -eq 200
+      - name: Sleep for 30 seconds (si pm2 mets du temps à démarrer)
+        uses: jakejarvis/wait-action@master
+        with:
+        time: '3s'
+      - name: Check http status code of API
+        uses: lakuapik/gh-actions-http-status@v1
+        with:
+          sites: '["http://grp6.360medics.com:8080/status"]'
+          expected: '[200]'
 
 

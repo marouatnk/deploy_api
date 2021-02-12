@@ -13,6 +13,10 @@ app.get('/', (req: any, res: any) => {
     res.send({ message: "Ok group6" })
 })
 
+app.get('/status', (req: any, res: any) => {
+  res.send({ message: "It's online :) Group6 we rock!" })
+})
+
 app.get('/tracks', (req: any, res: any) => {
   const limit = req.query.limit
 
