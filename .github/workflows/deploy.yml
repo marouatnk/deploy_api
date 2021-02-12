@@ -44,3 +44,15 @@ jobs:
 
           pm2 stop app-grp6 > /dev/null 2>&1
           pm2 start index.js --name "app-grp6"
+
+    - name: testing the api
+      uses: satak/webrequest-action@master
+      with:
+        url: http://grp6.360medics.com:8080/
+        method: GET
+        run: |
+        $output = '${{ steps.webhook.outputs.output }}' | ConvertFrom-Json
+        Write-Host "Time from output $($output.time) statusCode $($output.statusCode) data $($output.data)"
+        $output.statusCode -eq 200
+
+
