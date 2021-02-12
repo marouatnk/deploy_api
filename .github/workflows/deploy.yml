@@ -50,7 +50,7 @@ jobs:
       - name: Sleep for 30 seconds (si pm2 mets du temps à démarrer)
         uses: jakejarvis/wait-action@master
         with:
-        time: '3s'
+          time: '3s'
       - name: Check http status code of API
         uses: lakuapik/gh-actions-http-status@v1
         with:
