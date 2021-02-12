@@ -5,22 +5,28 @@ import { Config, DB } from "./service/index.service"
 import { TrackRepository } from "./repository/track.repository"
 
 const app = express()
+var cors = require('cors');
+
+app.use(cors())
 
 app.get('/', (req: any, res: any) => {
-    res.send({ message: "Ok" })
+    res.send({ message: "Ok group6" })
+})
+
+app.get('/status', (req: any, res: any) => {
+  res.send({ message: "It's online :) Group6 we rock!" })
 })
 
 app.get('/tracks', (req: any, res: any) => {
   const limit = req.query.limit
-  
-  res.send([])
-//   TrackRepository.getTracks(limit)
-//       .then((tracks: any) => {
-//           res.send(tracks)
-//       }).catch(e => {
-//           // logs?
-//           res.send(500, { error: e.toString() })
-//       })
+
+  TrackRepository.getTracks(limit)
+      .then((tracks: any) => {
+          res.send(tracks)
+      }).catch(e => {
+          // logs?
+          res.status(500).send({ error: e.toString() })
+      })
 })
 
 app.listen(process.env.PORT, () => {
